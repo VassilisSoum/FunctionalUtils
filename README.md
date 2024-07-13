@@ -7,7 +7,7 @@ This library aims to provide a set of utilities to help with functional programm
 It is inspired by the functional programming libraries in other languages, such as Scala, Haskell, and Clojure and aims 
 to be a zero-dependencies library.
 
-Libraries like `Vavr` or `Cyclops` is that:
+It is also inspired by libraries such as `Vavr` or `Cyclops`. But these have issues such as:
 1. They do not seem to be maintained anymore.
 2. They are not zero-dependencies libraries.
 3. They have a big learning curve.
