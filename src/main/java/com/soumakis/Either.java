@@ -210,23 +210,3 @@ public sealed interface Either<L, R> permits Left, Right {
     return fold(l -> Optional.empty(), Optional::of);
   }
 }
-
-/**
- * Represents the left side of the {@code Either} type which contains a value of type {@code A}.
- *
- * @param <L> the type of the value contained in this {@code Left}
- * @param <R> the type of the value contained in the corresponding {@code Right}
- */
-record Left<L, R>(L value) implements Either<L, R> {
-
-}
-
-/**
- * Represents the right side of the {@code Either} type which contains a value of type {@code B}.
- *
- * @param <L> the type of the value contained in the corresponding {@code Left}
- * @param <R> the type of the value contained in this {@code Right}
- */
-record Right<L, R>(R value) implements Either<L, R> {
-
-}
