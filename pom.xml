@@ -40,10 +40,11 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git://github.com/myusername/my-library.git</connection>
-    <developerConnection>scm:git:ssh://github.com:myusername/my-library.git</developerConnection>
-    <url>http://github.com/myusername/my-library</url>
+    <connection>scm:git:git://github.com/VassilisSoum/FunctionalUtils.git</connection>
+    <developerConnection>scm:git:ssh://github.com:VassilisSoum/FunctionalUtils.git</developerConnection>
+    <url>http://github.com/VassilisSoum/FunctionalUtils</url>
   </scm>
+
 
   <dependencies>
     <dependency>
@@ -60,6 +61,46 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.3.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>3.2.1</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.6.3</version>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
