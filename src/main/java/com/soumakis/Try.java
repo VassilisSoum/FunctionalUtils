@@ -1,6 +1,8 @@
 package com.soumakis;
 
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -69,6 +71,55 @@ public sealed interface Try<T> permits Success, Failure {
    */
   default boolean isFailure() {
     return this instanceof Failure;
+  }
+
+  /**
+   * Executes the given consumer if this is a {@code Failure} instance.
+   *
+   * @param action the consumer to execute
+   * @return this {@code Try} instance
+   */
+  default Try<T> onFailure(Consumer<? super Throwable> action) {
+    if (isFailure()) {
+      action.accept(((Failure<T>) this).getCause());
+    }
+    return this;
+  }
+
+  /**
+   * Executes the given consumer if this is a {@code Success} instance. The method is primarily used
+   * for logging side effects
+   *
+   * @param action the consumer to execute
+   * @return this {@code Try} instance
+   */
+  default Try<T> peek(Consumer<? super T> action) {
+    Objects.requireNonNull(action);
+    if (isSuccess()) {
+      action.accept(((Success<T>) this).value());
+    }
+    return this;
+  }
+
+  /**
+   * Executes the failure consumer if this is a {@code Failure} instance, or the success consumer if
+   * it is a {@code Success} instance.
+   *
+   * @param failureAction the consumer to execute if this is a {@code Failure}
+   * @param successAction the consumer to execute if this is a {@code Success}
+   * @return this {@code Try} instance
+   */
+  default Try<T> peek(Consumer<? super Throwable> failureAction,
+      Consumer<? super T> successAction) {
+    Objects.requireNonNull(failureAction);
+    Objects.requireNonNull(successAction);
+
+    if (isSuccess()) {
+      successAction.accept(((Success<T>) this).value());
+    } else {
+      failureAction.accept(((Failure<T>) this).getCause());
+    }
+    return this;
   }
 
   /**

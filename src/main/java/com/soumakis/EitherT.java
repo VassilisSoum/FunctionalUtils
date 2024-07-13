@@ -162,4 +162,18 @@ public class EitherT<A, B> {
                     left -> recover.apply(left).toCompletableFuture(),
                     right -> CompletableFuture.completedFuture(Either.right(right)))));
   }
+
+  /**
+   * Converts to {@code TryT} by wrapping the {@code CompletableFuture} of {@code Either} in a
+   * {@code TryT}. If the {@code Either} is a {@code Left}, the {@code Try} will be a failure.
+   *
+   * @return a {@code TryT} instance wrapping the {@code CompletableFuture} of {@code Either} with a
+   * {@code Try} inside it.
+   */
+  public TryT<B> toTryT() {
+    return TryT.fromFuture(future.thenApply(either -> switch (either) {
+      case Left<A, B> ignored -> Try.failure(new RuntimeException());
+      case Right<A, B> right -> Try.success(right.value());
+    }));
+  }
 }

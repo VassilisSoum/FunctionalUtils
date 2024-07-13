@@ -99,4 +99,19 @@ public class EitherTTest {
     assert (recovered.toCompletableFuture().join().getRight() == 42);
   }
 
+  @Test
+  void testToTryT() {
+    EitherT<String, Integer> eitherT = EitherT.right(42);
+    TryT<Integer> tryT = eitherT.toTryT();
+    assert (tryT.toCompletableFuture().join().isSuccess());
+    assert (tryT.toCompletableFuture().join().get() == 42);
+  }
+
+  @Test
+  void testToTryTLeft() {
+    EitherT<String, Integer> eitherT = EitherT.left("error");
+    TryT<Integer> tryT = eitherT.toTryT();
+    assert (tryT.toCompletableFuture().join().isFailure());
+  }
+
 }

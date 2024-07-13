@@ -123,4 +123,21 @@ public class TryTest {
     assert (result.equals("new error"));
   }
 
+  @Test
+  void testOnFailure() {
+    Try<Integer> failure = Try.of(() -> {
+      throw new RuntimeException("error");
+    });
+    failure.onFailure(t -> {
+      assert (t.getMessage().equals("error"));
+    });
+  }
+
+  @Test
+  void testPeek() {
+    Try<Integer> success = Try.of(() -> 42);
+    success.peek(n -> {
+      assert (n == 42);
+    });
+  }
 }
