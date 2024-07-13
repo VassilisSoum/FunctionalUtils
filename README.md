@@ -7,7 +7,7 @@ This library aims to provide a set of utilities to help with functional programm
 It is inspired by the functional programming libraries in other languages, such as Scala, Haskell, and Clojure and aims 
 to be a zero-dependencies library.
 
-The main advantage of libraries like `Vavr` or `Cyclops` is that:
+Libraries like `Vavr` or `Cyclops` is that:
 1. They do not seem to be maintained anymore.
 2. They are not zero-dependencies libraries.
 3. They have a big learning curve.
