@@ -122,6 +122,10 @@ public sealed interface Try<T> permits Success, Failure {
     return this;
   }
 
+  default Either<Throwable, T> toEither() {
+    return fold(Either::left, Either::right);
+  }
+
   /**
    * Applies a function to the value if this is a {@code Success}, or a different function if this
    * is a {@code Failure}.
