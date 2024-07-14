@@ -12,6 +12,8 @@ It is also inspired by libraries such as `Vavr` or `Cyclops`. But these have iss
 2. They are not zero-dependencies libraries.
 3. They have a big learning curve.
 
+It is a small library, and it will never compete the big ones, but it can be useful for those that would like to remain lean.
+
 ## Features
 
 1. `Either` monad which represents a value that can be either of two types.
