@@ -11,6 +11,75 @@ import java.util.function.Supplier;
  * computed value. It's a functional programming concept used to handle exceptions in a more
  * functional way.
  *
+ * Example usage:
+ * <ul>
+ *   <li> {@code Try<Integer> result = Try.of(() -> 1 / 0);}</li>
+ *   <li> {@code result.fold(throwable -> reportError(throwable), value -> save(value));}</li>
+ *   <li> {@code result.getOrElse(() -> saveOperationHere());}</li>
+ *   <li>
+ *     <pre>
+ *       {@code
+ *       someOperationReturningAnIntegerValueThatMayThrowAnException()
+ *       .map(value -> value * 2)
+ *       .onFailure(throwable -> log.error("An error occurred on the first operation: " + throwable.getMessage()))
+ *       .flatMap(value -> someOtherOperationReturningAnIntegerValueThatMayThrowAnException(value))
+ *       .peek(value -> log.info("Value is: " + value))
+ *       .onFailure(throwable -> log.error("An error occurred on the second operation: " + throwable.getMessage()))
+ *       .getOrElse(() -> -1);
+ *
+ *       }
+ *     </pre>
+ *     versus the equivalent imperative code:
+ *     <pre>
+ *       {@code
+ *       int value;
+ *       try {
+ *       value = someOperationReturningAnIntegerValueThatMayThrowAnException();
+ *       value *= 2;
+ *       value = someOtherOperationReturningAnIntegerValueThatMayThrowAnException(value);
+ *       log.info("Value is: " + value);
+ *       } catch (Throwable throwable) {
+ *       log.error("An error occurred: " + throwable.getMessage());
+ *       value = -1;
+ *       }
+ *       }
+ *    </pre>
+ *    <p>The problem with the imperative code is that the `catch` block needs to be distinguished among the many different types of
+ *    exceptions that may be thrown, from all the operations. This leads to a lot of boilerplate code, and the code becomes harder to read and maintain.
+ *    </p>
+ *    <p>
+ *    The functional code, on the other hand, is more concise and easier to read, as it separates the happy path from the error handling
+ *    and allows for a more declarative style of programming. </p>
+ *   </li>
+ *   <li>
+ *     Combining with {@code Either}:
+ *     <pre>
+ *       {@code
+ *       final class PaymentClient {
+ *        private static final Logger logger = LoggerFactory.getLogger(BookStoreClient.class);
+ *        private final PaymentProviderLibrary paymentProviderLibrary;
+ *
+ *        private final Function<Throwable, BookStoreRestException> exceptionMapper;
+ *
+ *        PaymentClient(
+ *          final PaymentProviderLibrary paymentProviderLibrary,
+ *          final Function<Throwable, PaymentException> exceptionMapper) {
+ *            this.paymentProviderLibrary = paymentProviderLibrary;
+ *            this.exceptionMapper = exceptionMapper;
+ *        }
+ *
+ *        public Either<PaymentException, PaymentInfoData> retrievePaymentInfo(final String paymentId) {
+ *          return Try.of(() -> paymentLibrary.getPaymentById(paymentId))
+ *                 .onFailure(throwable -> logger.warn("Failed to get payment info for payment id {}", paymentId, throwable))
+ *                 .toEither()
+ *                 .leftMap(exceptionMapper);
+ *        }
+ *       }
+ *       }
+ *     </pre>
+ *   </li>
+ * </ul>
+ *
  * @param <T> the type of the value computed in case of success
  */
 public sealed interface Try<T> permits Success, Failure {

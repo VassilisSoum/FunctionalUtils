@@ -1,12 +1,94 @@
 package com.soumakis;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
  * Represents a value of one of two possible types (a disjoint union). Instances of {@code Either}
  * are either an instance of {@code Left} or {@code Right}. {@code Either} is useful for error
  * handling, allowing you to return either a result or an error.
+ *
+ * <p>Example usage:
+ * <ul>
+ *   <li>Returning a result or an error from a method and logging either case:
+ *   <pre>{@code
+ *     return someOperation()
+ *         .peek(System.err::println, System.out::println)
+ *         .fold(
+ *             error -> sendErrorToMonitoringTool("An error occurred: " + error),
+ *             value -> saveResult(value)
+ *         );
+ *   }</pre>
+ *   versus an imperative code style of:
+ *   <pre>{@code
+ *     try {
+ *         String result = someOperation();
+ *         System.out.println(result);
+ *         saveResult(result);
+ *     } catch (RuntimeException e) {
+ *         System.err.println(e.getMessage());
+ *         sendErrorToMonitoringTool("An error occurred: " + e.getMessage());
+ *     }
+ *   }</pre>
+ *   It allows you to handle the error and success cases in a more functional way, avoiding deeply nested try-catch statements which disrupt the flow
+ *   and make the code harder to read.
+ *   </li>
+ *
+ *   <li>Chaining operations that may fail:
+ *   <pre>{@code
+ *     Either<Error, String> result = someOperation()
+ *         .flatMap(this::anotherOperation)
+ *         .flatMap(this::yetAnotherOperation)
+ *         .leftMap(error -> handleFailure(error));
+ *   }</pre>
+ *   versus an imperative code style of:
+ *   <pre>{@code
+ *     try {
+ *         String result = someOperation();
+ *         result = anotherOperation(result);
+ *         result = yetAnotherOperation(result);
+ *     } catch (RuntimeException e) {
+ *         handleFailure(e);
+ *     }
+ *   }</pre>
+ *   It allows you to chain operations that may fail and handle the error cases in a more functional way.
+ *   Especially when there are a lot of operations that may fail, the code becomes more readable and maintainable.
+ *   </li>
+ *   <li>Easier pattern matching:
+ *   <pre>{@code
+ *     Either<Error, String> result = someOperation();
+ *     switch (result) {
+ *         case Left<Error, String> error -> handleFailure(error);
+ *         case Right<Error, String> value -> saveResult(value);
+ *     }
+ *   }</pre>
+ *   versus an imperative code style of:
+ *   <pre>{@code
+ *     try {
+ *         String result = someOperation();
+ *         saveResult(result);
+ *     } catch (RuntimeException e) {
+ *         handleFailure(e);
+ *     }
+ *   }</pre>
+ *   </li>
+ *   <li>Returning the result or another value if the result is an error:
+ *   <pre>{@code
+ *     Either<String, Integer> result = someOperation();
+ *     int value = result.getOrElse(0);
+ *   }</pre>
+ *   versus an imperative code style that mutates the value in a try-catch block:
+ *   <pre>{@code
+ *     int value;
+ *     try {
+ *         value = someOperation();
+ *     } catch (RuntimeException e) {
+ *         value = 0;
+ *     }
+ *   }</pre>
+ *   </li>
+ * </ul>
  *
  * @param <L> the type of the {@code Left} value
  * @param <R> the type of the {@code Right} value
@@ -208,5 +290,22 @@ public sealed interface Either<L, R> permits Left, Right {
    */
   default Optional<R> toOptional() {
     return fold(l -> Optional.empty(), Optional::of);
+  }
+
+  /**
+   * Applies the given consumers to the value of this {@code Either} depending on whether it is a
+   * {@code Left} or a {@code Right}.
+   *
+   * @param leftConsumer  the consumer to apply if the value is a {@code Left}
+   * @param rightConsumer the consumer to apply if the value is a {@code Right}
+   * @return this {@code Either} instance
+   */
+  default Either<L, R> peek(Consumer<? super L> leftConsumer, Consumer<? super R> rightConsumer) {
+    if (isLeft()) {
+      leftConsumer.accept(getLeft());
+    } else {
+      rightConsumer.accept(getRight());
+    }
+    return this;
   }
 }
