@@ -44,3 +44,11 @@ Then, you can add the dependency to your project.
   <version>1.2.1</version>
 </dependency>
 ```
+
+## TODO
+1. Validated which is a nice way to accummulate all errors happening in a context.
+2. Eval monad to allow for lazy and memoized evaluated computation, eagerly evaluated computation and always evaluated computation.
+3. Persistent List monad implementation equivalent to ArrayList but different from the Java collections to be truly immutable and performant using structural sharing.
+4. Persistent HashMap/HashSet monad implementation but different from the Java collections to be truly immutable and performant using structural sharing.
+5. Memoized version of CompletableFuture to ensure a single execution of an instance of CompletableFuture and avoid surprises.
+6. Lots of useful types with safe validations such as NonEmptyList, PositiveNumber, NonNegativeNumber, NonEmptyString etc
