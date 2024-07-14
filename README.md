@@ -47,6 +47,10 @@ Then, you can add the dependency to your project.
 </dependency>
 ```
 
+## Articles to read
+
+1. Introducing `TryT` monad with some examples [TryT article](https://www.catnipcoder.com/monad-transformer-in-java-part1)
+
 ## TODO
 1. Validated which is a nice way to accummulate all errors happening in a context.
 2. Eval monad to allow for lazy and memoized evaluated computation, eagerly evaluated computation and always evaluated computation.
