@@ -1,4 +1,4 @@
-package com.soumakis;
+package com.soumakis.control;
 
 /**
  * Represents the left side of the {@code Either} type which contains a value of type {@code A}.

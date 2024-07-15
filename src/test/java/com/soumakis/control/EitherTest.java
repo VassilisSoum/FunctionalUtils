@@ -1,4 +1,4 @@
-package com.soumakis;
+package com.soumakis.control;
 
 import org.junit.jupiter.api.Test;
 

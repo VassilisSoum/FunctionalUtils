@@ -1,4 +1,4 @@
-package com.soumakis;
+package com.soumakis.control;
 
 import java.util.Optional;
 import java.util.function.Function;

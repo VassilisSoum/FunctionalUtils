@@ -1,4 +1,4 @@
-package com.soumakis;
+package com.soumakis.control;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

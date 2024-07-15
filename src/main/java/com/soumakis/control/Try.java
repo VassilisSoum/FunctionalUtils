@@ -1,4 +1,4 @@
-package com.soumakis;
+package com.soumakis.control;
 
 import java.util.Objects;
 import java.util.Optional;

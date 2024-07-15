@@ -1,4 +1,4 @@
-package com.soumakis;
+package com.soumakis.control;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
