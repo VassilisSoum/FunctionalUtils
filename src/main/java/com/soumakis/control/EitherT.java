@@ -139,6 +139,33 @@ public class EitherT<A, B> {
   }
 
   /**
+   * Folds the left and right values of the {@code Either} monad to a single value of
+   * {@code CompletableFuture}.
+   *
+   * @param leftMapper  the function to apply to the left value
+   * @param rightMapper the function to apply to the right value
+   * @param <C>         the type of the new value
+   * @return a new {@code CompletableFuture} with the folded value
+   */
+  public <C> CompletableFuture<C> fold(Function<A, C> leftMapper, Function<B, C> rightMapper) {
+    return future.thenApply(either -> either.fold(leftMapper, rightMapper));
+  }
+
+  /**
+   * Folds the left and right values of the {@code Either} monad by flat mapping it to a single
+   * value of {@code CompletableFuture}.
+   *
+   * @param leftMapper  the function to apply to the left value
+   * @param rightMapper the function to apply to the right value
+   * @param <C>         the type of the new value
+   * @return a new {@code CompletableFuture} with the folded value
+   */
+  public <C> CompletableFuture<C> foldF(Function<A, CompletableFuture<C>> leftMapper,
+      Function<B, CompletableFuture<C>> rightMapper) {
+    return future.thenCompose(either -> either.fold(leftMapper, rightMapper));
+  }
+
+  /**
    * Returns the underlying {@code CompletableFuture} of {@code Either}.
    *
    * @return the {@code CompletableFuture<Either<A, B>>} representing the asynchronous computation

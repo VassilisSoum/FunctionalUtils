@@ -114,4 +114,40 @@ public class EitherTTest {
     assert (tryT.toCompletableFuture().join().isFailure());
   }
 
+  @Test
+  void testFold() throws ExecutionException, InterruptedException {
+    EitherT<String, Integer> eitherT = EitherT.right(42);
+    CompletableFuture<String> result = eitherT.fold(
+        left -> "error",
+        Object::toString);
+    assert (result.get().equalsIgnoreCase("42"));
+  }
+
+  @Test
+  void testFoldLeft() throws ExecutionException, InterruptedException {
+    EitherT<String, Integer> eitherT = EitherT.left("error");
+    CompletableFuture<String> result = eitherT.fold(
+        left -> "error",
+        Object::toString);
+    assert (result.get().equalsIgnoreCase("error"));
+  }
+
+  @Test
+  void testFoldF() throws ExecutionException, InterruptedException {
+    EitherT<String, Integer> eitherT = EitherT.right(42);
+    CompletableFuture<String> result = eitherT.foldF(
+        left -> CompletableFuture.completedFuture("error"),
+        right -> CompletableFuture.completedFuture(right.toString()));
+    assert (result.get().equalsIgnoreCase("42"));
+  }
+
+  @Test
+  void testFoldFLeft() throws ExecutionException, InterruptedException {
+    EitherT<String, Integer> eitherT = EitherT.left("error");
+    CompletableFuture<String> result = eitherT.foldF(
+        left -> CompletableFuture.completedFuture("error"),
+        right -> CompletableFuture.completedFuture(right.toString()));
+    assert (result.get().equalsIgnoreCase("error"));
+  }
+
 }
