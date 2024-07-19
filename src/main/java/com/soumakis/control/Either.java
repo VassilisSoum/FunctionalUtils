@@ -3,6 +3,7 @@ package com.soumakis.control;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Represents a value of one of two possible types (a disjoint union). Instances of {@code Either}
@@ -117,6 +118,24 @@ public sealed interface Either<L, R> permits Left, Right {
    */
   static <L, R> Either<L, R> right(R right) {
     return new Right<>(right);
+  }
+
+  /**
+   * Executes the provided {@code Supplier} function and returns a {@code Right} with the type of
+   * the Supplier or a {@code Left} with exception type passed as argument.
+   *
+   * @param fn          the function to execute
+   * @param exceptionFn the function that will handle any exceptions thrown by the Supplier function
+   *                    and convert to an exception to return as a Left
+   * @return a {@code Left} if the operation contained in the {@code Supplier} throws any Exception
+   * or a {@code Right} with the result of it.
+   */
+  static <L, R> Either<L, R> fromTryCatch(Supplier<R> fn, Function<Exception, L> exceptionFn) {
+    try {
+      return Either.right(fn.get());
+    } catch (Exception e) {
+      return Either.left(exceptionFn.apply(e));
+    }
   }
 
   /**

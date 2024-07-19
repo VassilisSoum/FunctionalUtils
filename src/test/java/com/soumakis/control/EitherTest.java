@@ -126,4 +126,13 @@ public class EitherTest {
     assert (mapped.getLeft() == 5);
   }
 
+  @Test
+  void testFromTryCatch() {
+    Either<IllegalStateException, Integer> either = Either.fromTryCatch(
+        () -> Integer.parseInt("number"), ex -> new IllegalStateException());
+
+    assert (either.isLeft());
+    assert (either.getLeft() != null);
+  }
+
 }
