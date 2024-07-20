@@ -21,7 +21,9 @@ It is a small library, and it will never compete the big ones, but it can be use
 3. `EitherT` monad transformer which allows to encapsulate an `Either` monad inside a CompletableFuture. This allows chaining and composing asynchronous computations that may
 fail, using functional programming principles.
 4. `TryT` monad transformer which allows to encapsulate a `Try` monad inside a CompletableFuture. This allows chaining and composing asynchronous computations that may fail, using functional programming principles.
-5. More features coming soon.
+5. `Validated` monad which represents a value that can be either of two types, but it accumulates errors.
+6. `Resource` which represents a resource that needs to be managed and closed after use for safe resource management.
+7. `For Comprehension` which allows to chain and compose monads in a more readable way than using nested flatMaps.
 
 ## Installation guide
 
@@ -43,7 +45,7 @@ Then, you can add the dependency to your project.
 <dependency>
   <groupId>com.github.VassilisSoum</groupId>
   <artifactId>FunctionalUtils</artifactId>
-  <version>1.5.0</version>
+  <version>1.6.0</version>
 </dependency>
 ```
 
@@ -52,9 +54,7 @@ Then, you can add the dependency to your project.
 1. Introducing `TryT` monad with some examples [TryT article](https://www.catnipcoder.com/monad-transformer-in-java-part1)
 
 ## TODO
-1. Validated which is a nice way to accummulate all errors happening in a context.
-2. Eval monad to allow for lazy and memoized evaluated computation, eagerly evaluated computation and always evaluated computation.
-3. Persistent List monad implementation equivalent to ArrayList but different from the Java collections to be truly immutable and performant using structural sharing.
-4. Persistent HashMap/HashSet monad implementation but different from the Java collections to be truly immutable and performant using structural sharing.
-5. Memoized version of CompletableFuture to ensure a single execution of an instance of CompletableFuture and avoid surprises.
-6. Lots of useful types with safe validations such as NonEmptyList, PositiveNumber, NonNegativeNumber, NonEmptyString etc
+1. Eval monad to allow for lazy and memoized evaluated computation, eagerly evaluated computation and always evaluated computation.
+2. Persistent List monad implementation equivalent to ArrayList but different from the Java collections to be truly immutable and performant using structural sharing.
+3. Persistent HashMap/HashSet monad implementation but different from the Java collections to be truly immutable and performant using structural sharing.
+4. Memoized version of CompletableFuture to ensure a single execution of an instance of CompletableFuture and avoid surprises.
