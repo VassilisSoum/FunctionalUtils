@@ -5,7 +5,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * A lazy value or computation that is evaluated only once.
+ * A monad representing a lazy evaluated computation which is memoized.
  *
  * <p>Example usage:</p>
  *
@@ -88,10 +88,12 @@ public final class Lazy<T> {
 
   /**
    * Flat maps the value of this lazy instance to a new lazy instance.
+   * <b>It is susceptible to stack overflow if the function passed to it is not tail recursive.</b>
    *
    * @param mapper the mapping function
    * @param <R>    the new type of the value
    * @return a new lazy instance with the mapped value
+   * @throws StackOverflowError if the function passed to it is not tail recursive
    */
   public <R> Lazy<R> flatMap(Function<? super T, Lazy<R>> mapper) {
     return Lazy.of(() -> mapper.apply(this.get()).get());
