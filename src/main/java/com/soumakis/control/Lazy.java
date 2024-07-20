@@ -1,6 +1,7 @@
 package com.soumakis.control;
 
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -18,8 +19,9 @@ import java.util.function.Supplier;
  *
  *   }
  * </pre>
- *
- * Another example that could be use is to defer the execution of a CompletableFuture and memoize it as well.
+ * <p>
+ * Another example that could be use is to defer the execution of a CompletableFuture and memoize it
+ * as well.
  *
  * <pre>
  *   {@code
@@ -72,4 +74,27 @@ public final class Lazy<T> {
     }
     return value;
   }
+
+  /**
+   * Maps the value of this lazy instance to a new value.
+   *
+   * @param mapper the mapping function
+   * @param <R>    the new type of the value
+   * @return a new lazy instance with the mapped value
+   */
+  public <R> Lazy<R> map(Function<? super T, ? extends R> mapper) {
+    return Lazy.of(() -> mapper.apply(this.get()));
+  }
+
+  /**
+   * Flat maps the value of this lazy instance to a new lazy instance.
+   *
+   * @param mapper the mapping function
+   * @param <R>    the new type of the value
+   * @return a new lazy instance with the mapped value
+   */
+  public <R> Lazy<R> flatMap(Function<? super T, Lazy<R>> mapper) {
+    return Lazy.of(() -> mapper.apply(this.get()).get());
+  }
+
 }

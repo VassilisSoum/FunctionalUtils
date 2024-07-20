@@ -15,6 +15,28 @@ public class LazyTest {
     });
   }
 
+  @Test
+  void testMap() {
+    Lazy<Integer> lazy = Lazy.of(this::generateRandomNumber);
+    Lazy<Integer> mapped = lazy.map(i -> i * 2);
+    int value = mapped.get();
+
+    IntStream.range(0, 100).forEach(i -> {
+      assert (mapped.get() == value);
+    });
+  }
+
+  @Test
+  void testFlatMap() {
+    Lazy<Integer> lazy = Lazy.of(this::generateRandomNumber);
+    Lazy<Integer> flatMapped = lazy.flatMap(i -> Lazy.of(() -> i * 2));
+    int value = flatMapped.get();
+
+    IntStream.range(0, 100).forEach(i -> {
+      assert (flatMapped.get() == value);
+    });
+  }
+
   private int generateRandomNumber() {
     return (int) (Math.random() * 100);
   }

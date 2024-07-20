@@ -56,4 +56,3 @@ Then, you can add the dependency to your project.
 ## TODO
 1. Persistent List monad implementation equivalent to ArrayList but different from the Java collections to be truly immutable and performant using structural sharing.
 2. Persistent HashMap/HashSet monad implementation but different from the Java collections to be truly immutable and performant using structural sharing.
-3. Memoized version of CompletableFuture to ensure a single execution of an instance of CompletableFuture and avoid surprises.
