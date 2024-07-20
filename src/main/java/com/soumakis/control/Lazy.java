@@ -6,6 +6,31 @@ import java.util.function.Supplier;
 /**
  * A lazy value or computation that is evaluated only once.
  *
+ * <p>Example usage:</p>
+ *
+ * <pre>
+ *   {@code
+ *   Lazy<T> lazy = Lazy.of(() -> expensiveComputation());
+ *
+ *   T value = lazy.get(); //Result is memoized.
+ *   T value2 = lazy.get(); //Result is not recomputed.
+ *   value == value2; //true
+ *
+ *   }
+ * </pre>
+ *
+ * Another example that could be use is to defer the execution of a CompletableFuture and memoize it as well.
+ *
+ * <pre>
+ *   {@code
+ *   Lazy<CompletableFuture<T>> lazy = Lazy.of(() -> CompletableFuture.supplyAsync(() -> expensiveComputation()));
+ *
+ *   CompletableFuture<T> future = lazy.get(); //Result is memoized.
+ *   CompletableFuture<T> future2 = lazy.get(); //Result is not recomputed.
+ *   future == future2; //true
+ *   }
+ * </pre>
+ *
  * @param <T> the type of the value
  */
 public final class Lazy<T> {
