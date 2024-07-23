@@ -99,23 +99,18 @@ public final class Lazy<T> {
 
   /**
    * Maps the value of this lazy instance to a new value.
-   * <br>
-   * NOTE: Evaluates the lazy value!
    *
    * @param mapper the mapping function
    * @param <R>    the new type of the value
    * @return a new lazy instance with the mapped value
    */
   public <R> Lazy<R> map(Function<? super T, ? extends R> mapper) {
-    return Lazy.evaluated(mapper.apply(this.get()));
+    return Lazy.of(() -> mapper.apply(this.get()));
   }
 
   /**
    * Flat maps the value of this lazy instance to a new lazy instance.
    * <b>It is susceptible to stack overflow if the function passed to it is not tail recursive.</b>
-   *
-   * <br>
-   * NOTE: Evaluates the lazy value!
    *
    * @param mapper the mapping function
    * @param <R>    the new type of the value
@@ -123,7 +118,7 @@ public final class Lazy<T> {
    * @throws StackOverflowError if the function passed to it is not tail recursive
    */
   public <R> Lazy<R> flatMap(Function<? super T, Lazy<R>> mapper) {
-    return Lazy.evaluated(mapper.apply(this.get()).get());
+    return Lazy.of(() -> mapper.apply(this.get()).get());
   }
 
 }
