@@ -37,6 +37,13 @@ public class LazyTest {
     });
   }
 
+  @Test
+  void testEvaluated() {
+    var randomNumber = generateRandomNumber();
+    Lazy<Integer> lazy = Lazy.evaluated(randomNumber);
+    assert (lazy.get() == randomNumber);
+  }
+
   private int generateRandomNumber() {
     return (int) (Math.random() * 100);
   }

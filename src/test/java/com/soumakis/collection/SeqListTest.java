@@ -58,8 +58,11 @@ public class SeqListTest {
     assert flatMapped.tail().tail().tail().tail().tail().headOption().get() == 6;
     assert flatMapped.tail().tail().tail().tail().tail().tail().headOption().get() == 4;
     assert flatMapped.tail().tail().tail().tail().tail().tail().tail().headOption().get() == 8;
-    assert flatMapped.tail().tail().tail().tail().tail().tail().tail().tail().headOption().get() == 5;
-    assert flatMapped.tail().tail().tail().tail().tail().tail().tail().tail().tail().headOption().get() == 10;
+    assert
+        flatMapped.tail().tail().tail().tail().tail().tail().tail().tail().headOption().get() == 5;
+    assert
+        flatMapped.tail().tail().tail().tail().tail().tail().tail().tail().tail().headOption().get()
+            == 10;
   }
 
   @Test
@@ -123,5 +126,48 @@ public class SeqListTest {
     assert added.tail().tail().tail().headOption().get() == 3;
     assert added.tail().tail().tail().tail().headOption().get() == 4;
     assert added.tail().tail().tail().tail().tail().headOption().get() == 5;
+  }
+
+  @Test
+  void testMathComplex() {
+    SeqList<Integer> list = SeqList.of(1, 2, 3, 4, 5, 6);
+    SeqList<Double> updatedList = list.filterOut(number -> number % 2 == 0)
+        .map(number -> Math.pow(number, 2));
+
+    assert updatedList.headOption().get() == 1;
+    assert updatedList.tail().headOption().get() == 9;
+    assert updatedList.tail().tail().headOption().get() == 25;
+
+  }
+
+  @Test
+  void testFlatten() {
+    SeqList<SeqList<Integer>> list = SeqList.of(SeqList.of(1, 2), SeqList.of(3, 4),
+        SeqList.of(5, 6));
+    SeqList<Integer> flattened = list.flatMap(x -> x);
+    assert flattened.headOption().get() == 1;
+    assert flattened.tail().headOption().get() == 2;
+    assert flattened.tail().tail().headOption().get() == 3;
+    assert flattened.tail().tail().tail().headOption().get() == 4;
+    assert flattened.tail().tail().tail().tail().headOption().get() == 5;
+    assert flattened.tail().tail().tail().tail().tail().headOption().get() == 6;
+  }
+
+  @Test
+  void testPatternMatch() {
+    SeqList<Integer> list = SeqList.of(1, 2, 3, 4, 5, 6);
+    switch (list) {
+      case Empty() -> {
+        assert false;
+      }
+      case Cons<Integer> cons -> {
+        assert cons.head() == 1;
+        assert cons.tail().headOption().get() == 2;
+        assert cons.tail().tail().headOption().get() == 3;
+        assert cons.tail().tail().tail().headOption().get() == 4;
+        assert cons.tail().tail().tail().tail().headOption().get() == 5;
+        assert cons.tail().tail().tail().tail().tail().headOption().get() == 6;
+      }
+    }
   }
 }
