@@ -24,6 +24,9 @@ fail, using functional programming principles.
 5. `Validated` monad which represents a value that can be either of two types, but it accumulates errors.
 6. `Resource` which represents a resource that needs to be managed and closed after use for safe resource management.
 7. `For Comprehension` which allows to chain and compose monads in a more readable way than using nested flatMaps.
+8. `Lazy` monad which represents a value that is computed lazily and memoized.
+9. `SeqList` monad which represents a persistent and immutable list.
+10. `Option` monad which represents a value that may or may not be present which is an enhancement over the Java Optional.
 
 ## Installation guide
 
