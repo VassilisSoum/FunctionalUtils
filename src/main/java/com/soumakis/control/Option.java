@@ -47,6 +47,16 @@ public sealed interface Option<T> permits Some, None {
   }
 
   /**
+   * Returns an {@link Option} instance from the given {@link Optional} instance.
+   *
+   * @param optional the optional to convert
+   * @return an {@link Option} instance
+   */
+  static <T> Option<T> fromOptional(Optional<T> optional) {
+    return optional.map(Option::of).orElseGet(Option::none);
+  }
+
+  /**
    * Returns the value if it exists, otherwise returns the given default value.
    *
    * @param defaultValue the default value to return if the value does not exist

@@ -1,5 +1,6 @@
 package com.soumakis.control;
 
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 public class OptionTest {
@@ -144,5 +145,16 @@ public class OptionTest {
     assert(some.toTry(RuntimeException::new).isSuccess());
     assert(some.toTry(RuntimeException::new).get().equals("Hello"));
     assert(none.toTry(RuntimeException::new).isFailure());
+  }
+
+  @Test
+  void testFromOptional() {
+    Option<String> some = Option.fromOptional(Optional.of("Hello"));
+    assert(some.isDefined());
+    assert(some.getOrElse("").equals("Hello"));
+
+    Option<String> none = Option.fromOptional(Optional.empty());
+    assert(none.isEmpty());
+    assert(none.getOrElse("World").equals("World"));
   }
 }
