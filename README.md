@@ -57,6 +57,7 @@ Then, you can add the dependency to your project.
 1. Introducing `TryT` monad with some examples [TryT article](https://www.catnipcoder.com/monad-transformer-in-java-part1)
 2. Explaining `SeqList` monad with some examples [SeqList article](https://www.catnipcoder.com/persistent-and-immutable-list)
 3. Explaining the `Lazy` monad with some examples [Lazy monad article](https://www.catnipcoder.com/lazy-monad)
+4. Explaining the `Option` monad with some examples [Optional monad article](https://www.catnipcoder.com/option-monad)
 
 ## TODO
 1. Persistent List monad implementation equivalent to ArrayList but different from the Java collections to be truly immutable and performant using structural sharing.
