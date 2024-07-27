@@ -269,6 +269,8 @@ public sealed interface SeqList<T> permits Empty, Cons {
    * Returns the elements of the list as a Java {@link List}.
    * <p>
    * <b>It may not terminate for infinite size lists</b>
+   * <p>
+   * <b>NOTE: This method may break immutability if the elements of the list are mutable.</b>
    *
    * @return the elements of the list as a Java {@link List}
    */
