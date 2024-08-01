@@ -48,7 +48,7 @@ Then, you can add the dependency to your project.
 <dependency>
   <groupId>com.github.VassilisSoum</groupId>
   <artifactId>FunctionalUtils</artifactId>
-  <version>1.7.0</version>
+  <version>1.8.0</version>
 </dependency>
 ```
 
