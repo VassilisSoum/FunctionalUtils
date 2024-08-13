@@ -1,5 +1,6 @@
 package com.soumakis.control;
 
+import com.soumakis.safetype.ThrowingSupplier;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -10,7 +11,7 @@ import java.util.function.Supplier;
  * Represents a computation that may either result in an exception, or return a successfully
  * computed value. It's a functional programming concept used to handle exceptions in a more
  * functional way.
- *
+ * <p>
  * Example usage:
  * <ul>
  *   <li> {@code Try<Integer> result = Try.of(() -> 1 / 0);}</li>
@@ -93,7 +94,7 @@ public sealed interface Try<T> permits Success, Failure {
    * @param <T> the type of the result of the computation
    * @return a {@code Try} instance representing the outcome of the computation
    */
-  static <T> Try<T> of(Supplier<T> fn) {
+  static <T> Try<T> of(ThrowingSupplier<T> fn) {
     try {
       return new Success<>(fn.get());
     } catch (Throwable throwable) {
