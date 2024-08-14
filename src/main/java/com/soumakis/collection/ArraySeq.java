@@ -44,6 +44,18 @@ public final class ArraySeq<T> {
   }
 
   /**
+   * Creates a new sequence with the given elements from a {@link List}.
+   *
+   * @param elements the elements to add
+   * @param <T>      the type of the elements
+   * @return a new sequence with the elements added
+   */
+  @SuppressWarnings("unchecked")
+  public static <T> ArraySeq<T> of(List<T> elements) {
+    return new ArraySeq<>(elements.toArray((T[]) new Object[0]));
+  }
+
+  /**
    * Creates an empty sequence.
    *
    * @param <T> the type of the elements
