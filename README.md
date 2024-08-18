@@ -27,6 +27,9 @@ fail, using functional programming principles.
 8. `Lazy` monad which represents a value that is computed lazily and memoized.
 9. `SeqList` monad which represents a persistent and immutable list.
 10. `Option` monad which represents a value that may or may not be present which is an enhancement over the Java Optional.
+11. `Reader` monad which represents a computation that depends on a configuration.
+12. `Writer` monad which represents a computation that produces a log.
+13. `IO` monad which represents a computation that performs side effects which is lazy.
 
 ## Installation guide
 
@@ -48,7 +51,7 @@ Then, you can add the dependency to your project.
 <dependency>
   <groupId>com.github.VassilisSoum</groupId>
   <artifactId>FunctionalUtils</artifactId>
-  <version>2.1.0</version>
+  <version>2.4.0</version>
 </dependency>
 ```
 
