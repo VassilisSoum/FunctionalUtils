@@ -194,6 +194,17 @@ public class IO<A> {
   }
 
   /**
+   * Creates an {@code IO} instance from a {@code Try} value. If the {@code Try} is a success, the
+   * computation will return the value; if it is a failure, the computation will throw the
+   * exception.
+   * @param tryValue The {@code Try} value to convert to an {@code IO}.
+   * @return An {@code IO} instance that encapsulates the {@code Try} value.
+   */
+  public IO<A> fromTry(Try<A> tryValue) {
+    return new IO<>(tryValue::get);
+  }
+
+  /**
    * Executes the encapsulated computation and returns the result.
    * <b>Warning:</b> This method performs the side effects and should be used cautiously,
    * as it breaks the functional purity and referential transparency of the code.
