@@ -157,4 +157,12 @@ public class OptionTest {
     assert(none.isEmpty());
     assert(none.getOrElse("World").equals("World"));
   }
+
+  @Test
+  void testToEither() {
+    Option<String> some = Option.of("Hello");
+    Option<String> none = Option.of(null);
+    assert(some.toEither().isRight());
+    assert(none.toEither().isLeft());
+  }
 }

@@ -229,4 +229,11 @@ public sealed interface Option<T> permits Some, None {
     };
   }
 
+  default Either<Void, T> toEither() {
+    return switch (this) {
+      case Some<T> some -> Either.right(some.value());
+      case None<T> ignored -> Either.left(null);
+    };
+  }
+
 }
