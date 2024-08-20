@@ -64,7 +64,7 @@ public sealed interface Option<T> permits Some, None {
    */
   default T getOrElse(T defaultValue) {
     return switch (this) {
-      case Some<T> some -> some.value();
+      case Some<T>(T value) -> value;
       case None<T> ignored -> defaultValue;
     };
   }
@@ -97,7 +97,7 @@ public sealed interface Option<T> permits Some, None {
    */
   default Option<T> filter(Predicate<T> predicate) {
     return switch (this) {
-      case Some<T> some -> predicate.test(some.value()) ? this : new None<>();
+      case Some<T>(T value) -> predicate.test(value) ? this : new None<>();
       case None<T> ignored -> this;
     };
   }
@@ -116,7 +116,7 @@ public sealed interface Option<T> permits Some, None {
     Objects.requireNonNull(notFoundFunction);
     Objects.requireNonNull(foundFunction);
     return switch (this) {
-      case Some<T> some -> foundFunction.apply(some.value());
+      case Some<T>(T value) -> foundFunction.apply(value);
       case None<T> ignored -> notFoundFunction.get();
     };
   }
@@ -132,7 +132,7 @@ public sealed interface Option<T> permits Some, None {
   default <U> Option<U> map(Function<? super T, ? extends U> fn) {
     Objects.requireNonNull(fn);
     return switch (this) {
-      case Some<T> some -> Option.of(fn.apply(some.value()));
+      case Some<T>(T value) -> Option.of(fn.apply(value));
       case None<T> ignored -> Option.none();
     };
   }
@@ -148,7 +148,7 @@ public sealed interface Option<T> permits Some, None {
   default <U> Option<U> flatMap(Function<? super T, ? extends Option<U>> fn) {
     Objects.requireNonNull(fn);
     return switch (this) {
-      case Some<T> some -> fn.apply(some.value());
+      case Some<T>(T value) -> fn.apply(value);
       case None<T> ignored -> Option.none();
     };
   }
@@ -164,7 +164,7 @@ public sealed interface Option<T> permits Some, None {
   default <X> Either<X, T> toRight(Supplier<X> supplier) {
     Objects.requireNonNull(supplier);
     return switch (this) {
-      case Some<T> some -> Either.right(some.value());
+      case Some<T>(T value) -> Either.right(value);
       case None<T> ignored -> Either.left(supplier.get());
     };
   }
@@ -180,7 +180,7 @@ public sealed interface Option<T> permits Some, None {
   default <X> Either<T, X> toLeft(Supplier<X> supplier) {
     Objects.requireNonNull(supplier);
     return switch (this) {
-      case Some<T> some -> Either.left(some.value());
+      case Some<T>(T value) -> Either.left(value);
       case None<T> ignored -> Either.right(supplier.get());
     };
   }
@@ -195,7 +195,7 @@ public sealed interface Option<T> permits Some, None {
   default Try<T> toTry(Supplier<Exception> exceptionSupplier) {
     Objects.requireNonNull(exceptionSupplier);
     return switch (this) {
-      case Some<T> some -> Try.success(some.value());
+      case Some<T>(T value) -> Try.success(value);
       case None<T> ignored -> Try.failure(exceptionSupplier.get());
     };
   }
@@ -208,7 +208,7 @@ public sealed interface Option<T> permits Some, None {
    */
   default Optional<T> toJavaOptional() {
     return switch (this) {
-      case Some<T> some -> Optional.of(some.value());
+      case Some<T>(T value) -> Optional.of(value);
       case None<T> ignored -> Optional.empty();
     };
   }
@@ -233,6 +233,13 @@ public sealed interface Option<T> permits Some, None {
     return switch (this) {
       case Some<T> some -> Either.right(some.value());
       case None<T> ignored -> Either.left(null);
+    };
+  }
+
+  default <A> Either<A, T> toEither(Supplier<A> supplier) {
+    return switch (this) {
+      case Some<T>(T value) -> Either.right(value);
+      case None<T> ignored -> Either.left(supplier.get());
     };
   }
 
