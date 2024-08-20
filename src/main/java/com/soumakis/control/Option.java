@@ -229,6 +229,12 @@ public sealed interface Option<T> permits Some, None {
     };
   }
 
+  /**
+   * Converts the Option to an {@link Either} instance. If the Option is a {@link Some} then the
+   * Either is a {@link Right} instance, otherwise the Either is a {@link Left} instance.
+   *
+   * @return an {@link Either} instance
+   */
   default Either<Void, T> toEither() {
     return switch (this) {
       case Some<T> some -> Either.right(some.value());
@@ -236,6 +242,14 @@ public sealed interface Option<T> permits Some, None {
     };
   }
 
+  /**
+   * Converts the Option to an {@link Either} instance. If the Option is a {@link Some} then the
+   * Either is a {@link Right} instance, otherwise the Either is a {@link Left} instance.
+   *
+   * @param supplier the supplier to provide the value for the left side
+   * @param <A>      the type of the left side
+   * @return an {@link Either} instance
+   */
   default <A> Either<A, T> toEither(Supplier<A> supplier) {
     return switch (this) {
       case Some<T>(T value) -> Either.right(value);

@@ -327,4 +327,40 @@ public sealed interface Either<L, R> permits Left, Right {
     }
     return this;
   }
+
+  /**
+   * Applies the given functions to the value of this {@code Either} depending on whether it is a
+   * {@code Left} or a {@code Right}.
+   *
+   * @param leftFn  the function to apply if the value is a {@code Left}
+   * @param rightFn the function to apply if the value is a {@code Right}
+   * @param <A>     the type of the value produced by the left function
+   * @param <B>     the type of the value produced by the right function
+   * @return a new {@code Either} instance containing the result of the applied function
+   */
+  default <A, B> Either<A, B> bimap(Function<? super L, ? extends A> leftFn,
+      Function<? super R, ? extends B> rightFn) {
+    if (isLeft()) {
+      return Either.left(leftFn.apply(getLeft()));
+    }
+    return Either.right(rightFn.apply(getRight()));
+  }
+
+  /**
+   * Flatmaps the given functions to the value of this {@code Either} depending on whether it is a
+   * {@code Left} or a {@code Right}.
+   *
+   * @param leftFn  the function to apply if the value is a {@code Left}
+   * @param rightFn the function to apply if the value is a {@code Right}
+   * @param <A>     the type of the value produced by the left function
+   * @param <B>     the type of the value produced by the right function
+   * @return a new {@code Either} instance containing the result of the applied function
+   */
+  default <A, B> Either<A, B> biFlatMap(Function<? super L, ? extends Either<A, B>> leftFn,
+      Function<? super R, ? extends Either<A, B>> rightFn) {
+    if (isLeft()) {
+      return leftFn.apply(getLeft());
+    }
+    return rightFn.apply(getRight());
+  }
 }

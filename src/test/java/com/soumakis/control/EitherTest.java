@@ -135,4 +135,37 @@ public class EitherTest {
     assert (either.getLeft() != null);
   }
 
+  @Test
+  void testBimapApplyOnlyLeft() {
+    Either<String, Integer> left = Either.left("error");
+    Either<Integer, Integer> mapped = left.bimap(String::length, n -> n + 1);
+    assert (mapped.isLeft());
+    assert (mapped.getLeft() == 5);
+  }
+
+  @Test
+  void testBimapApplyOnlyRight() {
+    Either<String, Integer> right = Either.right(1);
+    Either<String, Integer> mapped = right.bimap(String::toUpperCase, n -> n + 1);
+    assert (mapped.isRight());
+    assert (mapped.getRight() == 2);
+  }
+
+  @Test
+  void testBiFlatMapLeft() {
+    Either<String, Integer> left = Either.left("error");
+    Either<Integer, Integer> mapped = left.biFlatMap(error -> Either.left(error.length()),
+        n -> Either.right(n + 1));
+    assert (mapped.isLeft());
+    assert (mapped.getLeft() == 5);
+  }
+
+  @Test
+  void testBiFlatMapRight() {
+    Either<String, Integer> right = Either.right(1);
+    Either<String, Integer> mapped = right.biFlatMap(Either::left, n -> Either.right(n + 1));
+    assert (mapped.isRight());
+    assert (mapped.getRight() == 2);
+  }
+
 }
