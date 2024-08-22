@@ -363,4 +363,12 @@ public sealed interface Either<L, R> permits Left, Right {
     }
     return rightFn.apply(getRight());
   }
+
+  default <C> Either<C, R> filterOrElse(Function<? super R, Boolean> predicate,
+      Supplier<C> supplier) {
+    if (isRight() && predicate.apply(getRight())) {
+      return Either.right(getRight());
+    }
+    return Either.left(supplier.get());
+  }
 }

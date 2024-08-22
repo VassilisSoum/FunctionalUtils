@@ -168,4 +168,12 @@ public class EitherTest {
     assert (mapped.getRight() == 2);
   }
 
+  @Test
+  void testFilterOrElse() {
+    Either<String, Integer> right = Either.right(42);
+    Either<String, Integer> filtered = right.filterOrElse(n -> n > 42, () -> "error");
+    assert (filtered.isLeft());
+    assert (filtered.getLeft().equals("error"));
+  }
+
 }
