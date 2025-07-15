@@ -1,10 +1,10 @@
 package com.soumakis.control;
 
+import com.soumakis.collection.Tuple2;
+
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 /**
  * A type that represents optional values. Instances of {@code Option} are either an instance of
@@ -257,4 +257,47 @@ public sealed interface Option<T> permits Some, None {
     };
   }
 
+  default <X> Option<Tuple2<T, X>> zip(Option<X> other) {
+    Objects.requireNonNull(other);
+    return switch (this) {
+      case Some<T>(T a) -> switch (other) {
+        case Some<X> b -> new Some<>(new Tuple2<>(a, b.value()));
+        case None<X> ignored -> Option.none();
+      };
+      case None<T> ignored -> Option.none();
+    };
+  }
+
+  default <X, R> Option<R> zipWith(Option<X> other, BiFunction<T, X, R> combiner) {
+    Objects.requireNonNull(combiner);
+    return this.flatMap(a -> other.map(b -> combiner.apply(a, b)));
+  }
+
+  default boolean contains(T value) {
+    return switch (this) {
+      case Some<T>(T v) -> Objects.equals(v, value);
+      case None<T> ignored -> false;
+    };
+  }
+
+  default Option<T> tap(Consumer<? super T> action) {
+    Objects.requireNonNull(action);
+    if (this instanceof Some<T>(T value)) {
+      action.accept(value);
+    }
+    return this;
+  }
+
+  default boolean exists(Predicate<? super T> predicate) {
+    Objects.requireNonNull(predicate);
+    return switch (this) {
+      case Some<T>(T value) -> predicate.test(value);
+      case None<T> ignored -> false;
+    };
+  }
+
+  @SuppressWarnings("unchecked")
+  static <U> Option<U> flatten(Option<? extends Option<U>> nested) {
+    return nested.flatMap(Function.identity());
+  }
 }

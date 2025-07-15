@@ -1,6 +1,10 @@
 package com.soumakis.control;
 
+import com.soumakis.collection.Tuple2;
+
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -370,5 +374,43 @@ public sealed interface Either<L, R> permits Left, Right {
       return Either.right(getRight());
     }
     return Either.left(supplier.get());
+  }
+
+  default boolean contains(R value) {
+    return switch (this) {
+      case Left<L, R>(L ignored) -> false;
+      case Right<L, R>(R right) -> Objects.equals(value, right);
+    };
+  }
+
+  default Either<L, R> orElse(Either<L, R> other) {
+      if (isLeft()) {
+          return other;
+      }
+      return this;
+  }
+
+  default <T> Either<L, Tuple2<R, T>> zip(Either<L, T> other) {
+      Objects.requireNonNull(other);
+      return switch (this) {
+          case Left<L, R> (L leftValue) -> Either.left(leftValue);
+          case Right<L, R> (R rightValue) -> switch (other) {
+              case Left<L, T> (L otherLeft) -> Either.left(otherLeft);
+              case Right<L, T> (T otherRight) -> Either.right(new Tuple2<>(rightValue, otherRight));
+          };
+      };
+  }
+
+  default <T, U> Either<L, U> zipWith(Either<L, T> other, BiFunction<? super R, ? super T, ? extends U> combiner) {
+      Objects.requireNonNull(other);
+      Objects.requireNonNull(combiner);
+
+      return switch (this) {
+          case Left<L, R> (L leftValue) -> Either.left(leftValue);
+          case Right<L, R> (R rightValue) -> switch (other) {
+              case Left<L, T> (L otherLeft) -> Either.left(otherLeft);
+              case Right<L, T> (T otherRight) -> Either.right(combiner.apply(rightValue, otherRight));
+          };
+      };
   }
 }
