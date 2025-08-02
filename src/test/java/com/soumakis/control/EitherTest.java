@@ -226,4 +226,20 @@ public class EitherTest {
         Either<String, Integer> leftEither = Either.left("error");
         assert (!leftEither.contains(42));
     }
+
+    @Test
+    void testMapLeft() {
+        Either<String, Integer> either = Either.left("error");
+        Either<Integer, Integer> mapped = either.mapLeft(String::length);
+        assert (mapped.isLeft());
+        assert (mapped.getLeft() == 5);
+    }
+
+    @Test
+    void testFlatMapLeft() {
+        Either<String, Integer> either = Either.left("error");
+        Either<String, Integer> mapped = either.flatMapLeft(error -> Either.right(error.length()));
+        assert (mapped.isRight());
+        assert (mapped.getRight() == 5);
+    }
 }

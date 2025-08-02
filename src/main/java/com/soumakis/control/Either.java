@@ -413,4 +413,18 @@ public sealed interface Either<L, R> permits Left, Right {
           };
       };
   }
+
+  default <X> Either<X, R> mapLeft(Function<? super L, ? extends X> fn) {
+      if (isRight()) {
+          return Either.right(getRight());
+      }
+      return Either.left(fn.apply(getLeft()));
+  }
+
+  default <X> Either<X, R> flatMapLeft(Function<? super L, ? extends Either<X, R>> fn) {
+      if (isRight()) {
+          return Either.right(getRight());
+      }
+      return fn.apply(getLeft());
+  }
 }
