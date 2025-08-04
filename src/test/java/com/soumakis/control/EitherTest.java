@@ -242,4 +242,12 @@ public class EitherTest {
         assert (mapped.isRight());
         assert (mapped.getRight() == 5);
     }
+
+    @Test
+    void testPeekLeft() {
+        Either<String, Integer> either = Either.left("error");
+        Either<String, Integer> peeked = either.peekLeft(System.out::println);
+
+        assert (peeked.isLeft());
+    }
 }

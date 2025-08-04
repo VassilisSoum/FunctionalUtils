@@ -332,6 +332,13 @@ public sealed interface Either<L, R> permits Left, Right {
     return this;
   }
 
+  default Either<L, R> peekLeft(Consumer<? super L> leftConsumer) {
+    if (isLeft()) {
+      leftConsumer.accept(getLeft());
+    }
+    return this;
+  }
+
   /**
    * Applies the given functions to the value of this {@code Either} depending on whether it is a
    * {@code Left} or a {@code Right}.
